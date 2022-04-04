@@ -6,7 +6,7 @@
 /*   By: anemesis <anemesis@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 15:04:38 by anemesis          #+#    #+#             */
-/*   Updated: 2022/04/02 19:28:47 by anemesis         ###   ########.fr       */
+/*   Updated: 2022/04/04 16:18:45 by anemesis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <stdlib.h>
-
-typedef struct t_philo
-{
-	int			philo_num;
-	int			left_fork_num;
-	int			right_fork_num;
-	pthread_t	thread;
-}	t_philo;
 
 typedef struct t_input
 {
@@ -43,13 +35,23 @@ typedef struct t_time
 	long			start;
 }	t_time;
 
+typedef struct t_philo
+{
+	int				name;
+	int				left_fork;
+	int				right_fork;
+	t_time			*time;
+	t_input			*inputs;
+	pthread_t		thread;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	*global;
+}	t_philo;
+
 typedef struct t_table
 {
 	t_input			inputs;
 	t_philo			*philos;
-	t_philo			*current_philo;
-	t_time			stopwatch;
-	pthread_mutex_t	*forks;
+	t_time			time;
 	pthread_mutex_t	global;
 }	t_table;
 
