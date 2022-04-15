@@ -6,7 +6,7 @@
 /*   By: anemesis <anemesis@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 15:04:38 by anemesis          #+#    #+#             */
-/*   Updated: 2022/04/14 20:55:32 by anemesis         ###   ########.fr       */
+/*   Updated: 2022/04/15 19:20:19 by anemesis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct t_philo
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*print_lock;
 	pthread_mutex_t	*end_lock;
-	pthread_mutex_t	*time_lock;
 	pthread_t		thread;
 	pthread_t		death_check;
 	t_input			*inputs;
@@ -53,25 +52,33 @@ typedef struct t_table
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	end_lock;
-	pthread_mutex_t	time_lock;
 	int				meal_end;
 	long			start_time;
 }	t_table;
 
 int		ft_atoi(const char	*str);
 
-long	get_sys_time(void);
-int		pthread_safe_mut_init(pthread_mutex_t *mutex);
 int		pthread_safe_mut_destroy(pthread_mutex_t *mutex);
-int		pthread_safe_create(pthread_t *thread, void *(*f)(void *), void *philo);
-int		pthread_safe_detach(pthread_t thread);
+int		pthread_safe_mut_lock(pthread_mutex_t *mutex);
+int		pthread_safe_mut_unlock(pthread_mutex_t *mutex);
+int		pthread_safe_mut_init(pthread_mutex_t *mutex);
 
 int		init_inputs(int argc, char ***argv, t_input *inputs);
 int		init_philos(t_table *table);
 int		init_forks(t_table *table, int num_of_philos);
 
-int		philo_notify(long *start_time, t_philo *philo, char *msg);
-void	ft_usleep(long time);
+int		start_dinner(t_table *table);
+int		end_dinner(t_table *table);
+int		pthread_safe_create(pthread_t *thread, void *(*f)(void *), void *philo);
+int		pthread_safe_detach(pthread_t thread);
+int		pthread_safe_mut_join(pthread_t thread);
+
+int		ft_usleep(long time, t_philo *philo);
 int		safe_malloc(void **ptr, size_t size, char *str);
+long	get_sys_time(void);
+
+int		philo_notify(long *start_time, t_philo *philo, char *msg);
+void	*eat_or_die(t_philo *philo);
+void	*is_dead(t_philo *philo);
 
 #endif
