@@ -6,7 +6,7 @@
 /*   By: anemesis <anemesis@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 11:57:11 by anemesis          #+#    #+#             */
-/*   Updated: 2022/04/15 18:46:39 by anemesis         ###   ########.fr       */
+/*   Updated: 2022/04/19 15:22:50 by anemesis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,16 @@ int	pthread_safe_mut_init(pthread_mutex_t *mutex)
 	if (pthread_mutex_init(mutex, NULL))
 	{
 		printf("Error while initializing mutex\n");
+		return (1);
+	}
+	return (0);
+}
+
+int	pthread_safe_join(pthread_t thread)
+{
+	if (pthread_join(thread, NULL))
+	{
+		printf("Error while joining thread\n");
 		return (1);
 	}
 	return (0);

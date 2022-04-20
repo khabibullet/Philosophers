@@ -6,7 +6,7 @@
 #    By: anemesis <anemesis@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/11 21:25:23 by anemesis          #+#    #+#              #
-#    Updated: 2022/04/02 18:14:28 by anemesis         ###   ########.fr        #
+#    Updated: 2022/04/19 13:11:08 by anemesis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ SRC_B		=	$(wildcard $(SRCDIR_B)/*.c)
 
 OBJ			=	$(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-OBJ_B		=	$(OBJ) $(SRC_B:$(SRCDIR_B)/%.c=$(OBJDIR_B)/%.o)
+OBJ_B		=	$(SRC_B:$(SRCDIR_B)/%.c=$(OBJDIR_B)/%.o)
 
 CC			=	gcc
 
