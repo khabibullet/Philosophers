@@ -6,7 +6,7 @@
 #    By: anemesis <anemesis@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/11 21:25:23 by anemesis          #+#    #+#              #
-#    Updated: 2022/04/19 13:11:08 by anemesis         ###   ########.fr        #
+#    Updated: 2022/04/23 15:21:36 by anemesis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ OBJ_B		=	$(SRC_B:$(SRCDIR_B)/%.c=$(OBJDIR_B)/%.o)
 
 CC			=	gcc
 
-CFLAGS 		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror
 
 all : $(NAME)
 

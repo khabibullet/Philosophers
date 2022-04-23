@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sys_utils.c                                        :+:      :+:    :+:   */
+/*   routine_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anemesis <anemesis@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 18:55:54 by anemesis          #+#    #+#             */
-/*   Updated: 2022/04/20 15:36:19 by anemesis         ###   ########.fr       */
+/*   Updated: 2022/04/22 20:56:49 by anemesis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ long	get_sys_time(void)
 
 int	ft_usleep(long time)
 {
-	long			start;
-	long			sys_time;
+	long	start;
+	long	sys_time;
 
 	sys_time = get_sys_time();
 	if (sys_time == -1)
@@ -58,25 +58,5 @@ int	philo_notify(t_table *table, char *msg, int death)
 	printf("%ld %d %s\n", (event - table->start_time), table->philo_name, msg);
 	if (!death)
 		sem_post(table->sem_print);
-	return (0);
-}
-
-int	pthread_safe_create(pthread_t *thread, void (*f)(t_table *table), void *table)
-{
-	if (pthread_create(thread, NULL, (void *(*)(void *))f, table))
-	{
-		printf("Error. Cannot create thread\n");
-		return (1);
-	}
-	return (0);
-}
-
-int	pthread_safe_detach(pthread_t thread)
-{
-	if (pthread_detach(thread))
-	{
-		printf("Error while detaching thread\n");
-		return (1);
-	}
 	return (0);
 }

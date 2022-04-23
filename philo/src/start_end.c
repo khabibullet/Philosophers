@@ -6,7 +6,7 @@
 /*   By: anemesis <anemesis@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:22:32 by anemesis          #+#    #+#             */
-/*   Updated: 2022/04/19 19:42:06 by anemesis         ###   ########.fr       */
+/*   Updated: 2022/04/23 14:27:11 by anemesis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,16 @@ int	start_dinner(t_table *table)
 	register int	i;
 
 	table->start_time = get_sys_time();
-	if (table->start_time == -1)
-		return (1);
 	i = 0;
 	while (i < table->inputs.num_of_philos)
 	{
-		if (pthread_safe_create(&(table->philos[i].thread),
-				(void *(*)(void *))eat_or_die, &table->philos[i]))
-			return (1);
+		pthread_create(&(table->philos[i].thread), NULL,
+			(void *(*)(void *))eat_or_die, &table->philos[i]);
 		i++;
 	}
+	pthread_mutex_lock(&table->print_lock);
 	table->meal_end = 0;
+	pthread_mutex_unlock(&table->print_lock);
 	return (0);
 }
 
@@ -38,37 +37,13 @@ int	end_dinner(t_table *table)
 	i = 0;
 	while (i < table->inputs.num_of_philos)
 	{
-		if (pthread_join(table->philos[i].thread, NULL))
-			return (1);
-		if (pthread_safe_mut_unlock(&table->forks[i]))
-			return (1);
-		if (pthread_safe_mut_destroy(&table->forks[i]))
-			return (1);
+		pthread_join(table->philos[i].thread, NULL);
+		pthread_mutex_unlock(&table->forks[i]);
+		pthread_mutex_destroy(&table->forks[i]);
 		i++;
 	}
-	if (pthread_safe_mut_destroy(&table->print_lock))
-		return (1);
+	pthread_mutex_destroy(&table->print_lock);
 	free(table->philos);
 	free(table->forks);
-	return (0);
-}
-
-int	pthread_safe_create(pthread_t *thread, void *(*f)(void *), void *philo)
-{
-	if (pthread_create(thread, NULL, void *(*f)(void *)f, philo))
-	{
-		printf("Error. Cannot create thread\n");
-		return (1);
-	}
-	return (0);
-}
-
-int	pthread_safe_join(pthread_t thread)
-{
-	if (pthread_join(thread, NULL))
-	{
-		printf("Error while joining thread\n");
-		return (1);
-	}
 	return (0);
 }
