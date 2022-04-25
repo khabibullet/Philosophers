@@ -6,7 +6,7 @@
 /*   By: anemesis <anemesis@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 14:59:05 by anemesis          #+#    #+#             */
-/*   Updated: 2022/04/23 16:54:52 by anemesis         ###   ########.fr       */
+/*   Updated: 2022/04/25 12:33:02 by anemesis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,13 @@ void	*death_monitor(void *tbl)
 	while (1)
 	{
 		current = get_sys_time();
-		if (current == -1)
-			return (NULL);
 		if (current - table->last_meal > table->inputs.time_to_die)
 		{
 			philo_notify(table, "died", 1);
 			sem_post(table->sem_clean);
 			return (NULL);
 		}
-		if (ft_usleep(1))
-			return (NULL);
+		usleep(1000);
 	}
 }
 
@@ -38,16 +35,12 @@ int	feed_philo(t_table *table)
 {
 	sem_wait(table->sem_forks_up);
 	sem_wait(table->sem_forks);
-	if (philo_notify(table, "has taken a fork", 0))
-		return (1);
+	philo_notify(table, "has taken a fork", 0);
 	sem_wait(table->sem_forks);
 	sem_post(table->sem_forks_up);
 	table->last_meal = get_sys_time();
-	if (table->last_meal == -1)
-		return (1);
-	if (philo_notify(table, "has taken a fork", 0)
-		|| philo_notify(table, "is eating", 0))
-		return (1);
+	philo_notify(table, "has taken a fork", 0);
+	philo_notify(table, "is eating", 0);
 	ft_usleep(table->inputs.time_to_eat);
 	sem_post(table->sem_forks);
 	sem_post(table->sem_forks);
@@ -63,16 +56,13 @@ int	start_dinner(t_table *table)
 	eat_count = 0;
 	while (1)
 	{
-		if (feed_philo(table))
-			return (1);
+		feed_philo(table);
 		eat_count++;
 		if (eat_count == table->inputs.num_each_eat)
 			sem_post(table->sem_fed);
-		if (philo_notify(table, "is sleeping", 0)
-			|| ft_usleep(table->inputs.time_to_sleep))
-			return (1);
-		if (philo_notify(table, "is thinking", 0))
-			return (1);
+		philo_notify(table, "is sleeping", 0);
+		ft_usleep(table->inputs.time_to_sleep);
+		philo_notify(table, "is thinking", 0);
 	}
 	return (0);
 }

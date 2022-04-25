@@ -6,7 +6,7 @@
 /*   By: anemesis <anemesis@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 15:04:38 by anemesis          #+#    #+#             */
-/*   Updated: 2022/04/23 14:22:51 by anemesis         ###   ########.fr       */
+/*   Updated: 2022/04/25 12:29:55 by anemesis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int		init_forks(t_table *table, int num_of_philos);
 int		start_dinner(t_table *table);
 void	*eat_or_die(t_philo *philo);
 int		end_dinner(t_table *table);
+int		eat_sleep_repeat(t_philo *philo);
+void	*death_monitor(void *arg);
 
 int		ft_usleep(long time, t_philo *philo);
 long	get_sys_time(void);
